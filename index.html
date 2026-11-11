@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#0a0e1a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<title>LIONS BLACK · 出場音樂播放器</title>
+<title>LIONS BLACK · 出場音樂</title>
 <style>
   :root{
     --bg:#0a0e1a; --panel:#121935; --panel2:#1a2244;
@@ -19,14 +19,13 @@
     background:radial-gradient(1200px 600px at 50% -10%, #1b2550 0%, var(--bg) 60%);
     color:var(--txt); min-height:100vh; padding:16px; max-width:760px; margin:0 auto;
   }
-  h1{font-size:22px; text-align:center; margin:6px 0 2px; letter-spacing:1px;}
+  h1{font-size:22px; text-align:center; margin:6px 0 14px; letter-spacing:1px;}
   h1 .hl{color:var(--gold);}
-  .sub{text-align:center; color:var(--sub); font-size:13px; margin-bottom:14px;}
 
   /* NOW PLAYING */
   .now{
     background:linear-gradient(135deg,var(--panel2),var(--panel));
-    border:1px solid #2a3566; border-radius:16px; padding:16px; margin-bottom:16px;
+    border:1px solid #2a3566; border-radius:16px; padding:16px; margin-bottom:14px;
     box-shadow:0 8px 30px rgba(0,0,0,.4); text-align:center; position:relative; overflow:hidden;
   }
   .now .tag{display:inline-block; font-size:11px; letter-spacing:2px; color:var(--live); font-weight:700;}
@@ -38,26 +37,16 @@
   .now.playing .pulse{opacity:1; animation:pulse 1.4s ease-in-out infinite;}
   @keyframes pulse{0%,100%{transform:scale(1);opacity:.5;}50%{transform:scale(1.05);opacity:1;}}
 
-  /* INPUT */
-  .row{display:flex; gap:10px; margin-bottom:14px;}
-  #num{
-    flex:1; font-size:30px; text-align:center; font-weight:800; color:var(--gold);
-    background:var(--panel); border:2px solid #2a3566; border-radius:14px; padding:10px;
-    outline:none; caret-color:var(--gold);
-  }
-  #num:focus{border-color:var(--gold);}
-  button.go{
-    font-size:18px; font-weight:800; color:#1a1300; background:linear-gradient(180deg,var(--gold),var(--gold2));
-    border:none; border-radius:14px; padding:0 22px; cursor:pointer; box-shadow:0 4px 0 #b97f00;
-  }
-  button.go:active{transform:translateY(2px); box-shadow:0 2px 0 #b97f00;}
+  /* 唯一的按鈕：停止 */
+  .stopbar{display:flex; justify-content:center; margin-bottom:14px;}
   button.stop{
-    background:var(--panel2); color:var(--live); border:2px solid #5a2a2a; border-radius:14px;
-    font-weight:800; padding:0 16px; cursor:pointer;
+    width:100%; max-width:260px; height:52px; font-size:18px; font-weight:800; letter-spacing:4px;
+    color:#fff; background:linear-gradient(180deg,#7a2b32,#5a1f25);
+    border:2px solid #a5424a; border-radius:14px; cursor:pointer;
   }
-  .hint{text-align:center; color:var(--sub); font-size:12px; margin:-6px 0 16px;}
+  button.stop:active{transform:translateY(2px);}
 
-  /* GRID */
+  /* 卡片 */
   .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px;}
   .card{
     background:var(--panel); border:1px solid #2a3566; border-radius:14px; padding:12px 8px;
@@ -73,80 +62,43 @@
   .tcard{
     grid-column:1 / -1; background:linear-gradient(135deg,#222b50,#15203f);
     border:1px dashed #3a4a86; border-radius:14px; padding:14px; text-align:center; cursor:pointer;
+    margin-top:4px;
   }
   .tcard .cnum{color:var(--accent); font-size:24px; font-weight:800;}
   .tcard .cnm{font-size:15px; font-weight:700;}
 
   footer{text-align:center; color:#56608c; font-size:11px; margin-top:18px;}
   audio{display:none;}
-  details.fx{margin-top:14px; background:var(--panel); border:1px solid #2a3566; border-radius:14px; padding:10px 14px; font-size:12px; color:var(--sub);}
-  details.fx summary{cursor:pointer; color:var(--gold); font-weight:700; font-size:13px; list-style:none;}
-  details.fx summary::-webkit-details-marker{display:none;}
-  details.fx summary::before{content:"\25B8  "; color:var(--gold);}
-  details.fx[open] summary::before{content:"\25BE  ";}
-  details.fx table{width:100%; border-collapse:collapse; margin-top:10px;}
-  details.fx td{padding:5px 4px; border-top:1px solid #26305c; vertical-align:top;}
-  details.fx td:first-child{color:var(--gold); font-weight:700; white-space:nowrap; width:46px;}
-  details.fx td:nth-child(2){color:var(--txt);}
-  details.fx td:last-child{color:var(--accent); white-space:nowrap; text-align:right; width:42px;}
-  details.fx .note{margin-top:9px; font-size:11px; color:#6f7aa8; line-height:1.5;}
-.mobhint{background:rgba(61,169,252,.08);border:1px solid #2a4d80;border-radius:12px;padding:10px 12px;font-size:12px;color:var(--sub);line-height:1.75;margin:10px 0 14px;}
-  .mobhint b{color:var(--accent);}
-  .mobhint .aw{color:var(--gold);font-weight:700;}
-  </style>
+  details.setup{margin-top:14px; background:var(--panel); border:1px solid #2a3566; border-radius:14px; padding:10px 14px; font-size:12px; color:var(--sub); line-height:1.7;}
+  details.setup summary{cursor:pointer; color:var(--gold); font-weight:700; font-size:13px; list-style:none;}
+  details.setup summary::-webkit-details-marker{display:none;}
+  details.setup summary::before{content:"\25B8  ";}
+  details.setup[open] summary::before{content:"\25BE  ";}
+  details.setup div{margin-top:8px;}
+  .aw{color:var(--gold); font-weight:700;}
+</style>
 </head>
 <body>
   <h1>LIONS <span class="hl">BLACK</span> 出場音樂</h1>
-  <div class="sub">輸入球員號碼播放上場音樂 · 輸入 0 播放換場音樂 · 輸入 00 播放終結者 CLOSER · 輸入 100 播放完整音樂<br><span style="color:var(--gold);font-size:11px;letter-spacing:1px">v24 · 00 CLOSER 樂句完整版 / 3 真實槍響 / 32 甲子園號角 / 39 戰鼓轟隆 · 2026-11-11</span></div>
 
   <div class="now idle" id="now">
     <div class="pulse"></div>
     <div class="tag" id="nowTag">待命</div>
     <div class="num" id="nowNum">—</div>
-    <div class="nm" id="nowName">輸入號碼開始</div>
+    <div class="nm" id="nowName">點擊卡片播放</div>
     <div class="nk" id="nowNick"></div>
   </div>
 
-  <div class="row">
-    <input id="num" inputmode="numeric" pattern="[0-9]*" placeholder="號碼" autocomplete="off">
-    <button class="go" id="goBtn">播放</button>
-    <button class="stop" id="stopBtn">停止</button>
-  </div>
-  <div class="hint">支持鍵盤輸入後按 Enter · 或直接點下方球員卡</div>
-  <div class="mobhint"><b>手機連藍牙音箱播放</b>：先連好藍牙音箱、用手機音量鍵把媒體音量調到最大，再開本頁點號碼，音訊即自動走藍牙輸出。播放時會盡量保持螢幕常亮（<span class="aw" id="awakeState">待播放</span>），避免鎖屏斷播；iPhone 若仍自動鎖屏，請到「設定 → 顯示與亮度 → 自動鎖定 → 永不」。藍牙音箱／車機／鎖屏上的播放、暫停、上一首、下一首按鍵亦可直接控制。</div>
+  <div class="stopbar"><button class="stop" id="stopBtn">停 止</button></div>
 
   <div class="grid" id="grid"></div>
 
-  <details class="fx">
-    <summary>聲效對照表 · 檢驗用（點開）</summary>
-    <table>
-      <tr><td>50</td><td>關門重擊 · 標杆，未改動</td><td>標杆</td></tr>
-      <tr><td>90</td><td>雷擊閃電 · 標杆，未改動</td><td>標杆</td></tr>
-      <tr><td>14</td><td>掠風破空 · 由遠而近的立體風掃（Transition windy swoosh）</td><td>2.0s</td></tr>
-      <tr><td>32</td><td><b>甲子園球場號角 · STADIUM HORN</b> · 類似甲子園開場的莊嚴長鳴號角：真實警報錄音（spaceship_alarm.ogg）經低通 + 包絡平滑，去掉急促上下襬動、化為<b>穩定莊嚴的號角長鳴</b>，疊 machine_rumble 帶通做號角低音主體 + 超低頻「球場震動」床 + 長球場混響尾（rt60 1.8）。立體聲加寬（號角窗左右聲道相關 0.35），2.8s 長鳴、咬在名字尾不蓋 WANG。2.8s</td><td>2.8s</td></tr>
-      <tr><td>9</td><td><b>棒球場觀眾的歡呼聲</b> · 全場沸騰的勝利歡呼（Huge crowd cheering victory）</td><td>2.2s</td></tr>
-      <tr><td>99</td><td>短雷轟隆 + 玻璃「咔嚓」碎裂 · 標杆，未改動</td><td>1.8s</td></tr>
-      <tr><td>18</td><td><b>GOLDEN ARM 金色重擊</b> · 漸強揮棒 → 一記又亮又重的擊球（真實球棒擊球 / Hitting golf ball / Metal hammer hit 金光 / Impact of a blow / 木棒低頻）</td><td>1.35s</td></tr>
-      <tr><td>59</td><td>SPEED RACER · 賽車引擎加速轟鳴（羅哥提供原聲）· 標杆，未改動</td><td>3.0s</td></tr>
-      <tr><td>26</td><td>蓄勢激光雷鳴 · 精準一擊（Cinematic laser gun thunder）</td><td>2.9s</td></tr>
-      <tr><td>46</td><td>火花輕閃 · 不爆炸的少女感（Sweeping sparkle intro）</td><td>1.5s</td></tr>
-      <tr><td>3</td><td><b>真實槍響掃射 · REAL GUNSHOT STRAFE</b> · 羅哥要「更真槍爆裂聲」、不要激光／科幻味。移除 laser_gun，改用真實硬物高速撞擊錄音：metal_bat_hits_baseball.ogg（真實金屬撞擊脆響，起音銳、中高頻 2–8k 佔 50%、低頻僅 4.5% 不悶、衰減快）作每聲槍點的高頻爆裂主體，疊 reverberating_slam.ogg 低頻段（≤200Hz 26%、衰減極快）作真實「槍口爆風」轟底——兩者皆真實錄音、無合成、無激光。每聲獨立短瞬態（~80ms 包絡）按 ~14Hz 連發排布，左右聲像由左掃到右再掃回（strafe 掃射），下墊 machine_rumble 槍身震動（≤120Hz）+ 長球場混響（rt60 2.0）。純聲效 ≤200Hz 僅 11.3%、≤80Hz 3.3%（高頻脆裂連發，與 #39 戰鼓低頻碾壓聽感徹底拉開）；聲效 5.65s 起、名字 5.73s 結束，最響點 6.75s 遠在名字後，絕不蓋 WANG；峰值 0.980 不削波。3.0s</td><td>3.0s</td></tr>
-      <tr><td>39</td><td><b>戰鼓重擊 + 轟隆隆碾壓 · WAR DRUMS</b> · 真實戰爭鼓錄音（mk_2784 Drums of war）作軍鼓/戰鼓主體，疊 machine_rumble + distant_thunder 持續低頻轟隆床（Titan Crusher 的碾壓壓迫感），重擊處再疊 reverberating_slam 低頻轟響，長球場混響尾（rt60 2.0）。≤200Hz 低頻佔比 96.5%，轟隆隆極突出；聲效 4.38s 起、名字 4.46s 結束，絕不蓋 WANG。3.6s</td><td>3.6s</td></tr>
-      <tr><td>00</td><td><b>終結者 · CLOSER</b> · 輸入 00 播放。從 <b>完整音樂（#100，BGM_STADIUM_ORCHESTRAL，2:56）</b>截取 <b>薩克斯風樂段</b>：原指定 00:31–00:44，v24 依樂句結構修正為 <b>00:30.6–00:47.5（16.87s）</b>——實測節拍 0.824s（72.8 BPM），8 拍樂句邊界在 27.89 / 34.51 / 41.13 / 47.75，30.58 為旋律最強起音；故從旋律起音開始、往後補到樂句收尾，並加 0.03s 淡入 + 1.0s 餘弦淡出，消除原版「滿音量硬切」的突兀感（首尾 10ms 能量 0.125/0.133 → 0.015/0.000）。完整涵蓋原本 00:31–00:44，前後各補、樂句完整。44.1kHz 立體聲 / 192kbps，純音樂、無人聲播報。置於換場音樂卡之下、編號 00。峰值 0.841 不削波。</td><td>16.9s</td></tr>
-      <tr><td>100</td><td><b>完整音樂 · FULL STADIUM ANTHEM</b> · 輸入 100 播放完整球場管絃樂（BGM_STADIUM_ORCHESTRAL，約 2 分 56 秒），適合賽前暖場與全場大合奏氛圍。無人聲、無播報，純音樂。</td><td>2:56</td></tr>
-    </table>
-    <div class="note">v5：8 條聲效改用 Mixkit 專業成品錄音（Sound Effects Free License，免署名可商用）。每位一條完整立體聲素材，只裁掉靜音、不疊層、不轉單聲道，保留原始聲像與「漸強 → 高潮 → 長尾衰減」弧線，規格對齊 #59 賽車引擎。<br>v6 / v8（已廢棄）：#18 先後做過「長傳飛遠」和「捕手接球」——羅哥定調，這是<b>上場打擊的助威音樂</b>，不是介紹守備位置，兩次方向都錯了。<br>v7：#32 換成「強力揮棒 + <b>勢大力沉的清脆擊球</b>」——羅哥先反饋金屬長迴響像敲鑼（已整條刪除），再要求「擊打更重」：現在揮棒帶漸強蓄力與低頻破風，擊球瞬間在同一記瞬態上疊合<b>真實球棒擊中棒球</b>（Google 官方庫）、Hitting golf ball 立體聲成品、真實木棒低頻衝擊，以及一層純低頻重擊（延後 10ms 落下，像重量砸在球上）。<b>低頻能量佔比 3.5%→19.2%、低頻峰值約 5 倍、擊球 RMS +52%；-20dB 衰減仍僅 0.075s、共振尾 0.0012</b>——又重又脆，絕不拖成鑼或轟隆。仍是 1.3s、原始立體聲像。<br>v9：#18 GOLDEN ARM 重做成<b>一記金色重擊</b>——0→0.42s 漸強揮棒（時間壓縮的寬立體聲破風 + 高頻揮鞭，能量一路加速），0.42s 六條真實錄音對齊<b>同一瞬態</b>：真實球棒擊中棒球、Hitting golf ball、Metal hammer hit（短促金屬金光，-20dB 僅 0.115s、不會拖成鑼）、Impact of a blow、木棒低頻與純低頻重量層；之後是連續球場餘韻，無斷檔。<b>高頻 47.3%、質心 4801Hz、立體聲 W0.925</b>，比 #32 明顯更亮更「金」，但一記打擊毫不含糊；-20dB 0.280s、共振尾 0.0395，仍是清脆不拖泥帶水。1.35s。<br>v11：#3 / #9 / #32 三條按綽號與「上場打擊助威」定位重做（羅哥定調：這是助威音樂，不是守備介紹）。<br>　· #3 <b>Triple Threat</b>：<b>密點連擊的戰爭鼓聲</b>——戰爭鼓密點連擊（Drums of war，實測 8 個鼓點、間隔 0.11s、節奏 CV 0.24，全場最規律的連擊），低頻加厚提氣，立體聲加寬 + 球場混響尾。2.0s。<br>　· #9 <b>King of Swing</b>：<b>棒球場觀眾的歡呼聲</b>——全場沸騰的勝利歡呼（Huge crowd cheering victory），立體聲加寬成「整個球場為你沸騰」的氛圍。2.2s。<br>　· #32 <b>Clutch Hitter</b>：<b>全場聚焦的吶喊助威</b>——全場聚焦的球場吶喊助威（Crowd yelling，截最響一聲）+ 球場混響。1.6s。<br>v12：僅 #3、#32 兩條再調（羅哥反饋）。<br>　· #3 <b>Triple Threat</b>：原戰爭鼓密點連擊「不夠有氣勢」——保留節奏，把低頻加厚砸胸（≤180Hz 低頻能量佔比 69.3%）、疊一層同素材超低頻 boom 床、立體聲加寬到 W0.62、球場混響尾加長（rt60 1.1s），整體更威武宏大。2.1s。<br>　· #32 <b>Clutch Hitter</b>：從 v11 的「全場聚焦吶喊」換成<b>重拳一記、一拳斃命</b>——破空揮拳（swoosh）後一記致命重拳：真實人體重擊 + 關節脆響（Impact of a blow）+ 中低頻軀體（mk_2112）+ 超低頻重錘（sledgehammer ≤120Hz），只一記、絕不拖成鑼。1.7s。<br>v13：僅 #39 一條再改（羅哥要求），做成「落下巨石，地動山搖」。<br>v14：#32、#39 兩條再調（羅哥反饋）。<br>　· #32 <b>Clutch Hitter</b>：在 v12 重拳基礎上加<b>炸裂</b>——保留勢大力沉的人體重擊 + 低頻重錘，疊一記尖銳寬頻爆裂瞬態（thunder crack）+ 把關節脆響增益拉高，讓重拳「炸」開而不是悶砸。2.2s。<br>　· #39 <b>Titan Crusher</b>：從 v13 的「落石單發撞擊」改成<b>持續地動轟鳴</b>——不再是單記落地，而是持續、由弱到強的地動低頻轟鳴：滾動雷聲（40% 超低頻滾動轟隆）作主轟鳴床 + machine rumble 持續地抖底噪，中途兩記巨型重擊當「劇烈搖晃」，rubble crash 當崩塌碎石，長球場混響尾（rt60 1.8s）做餘震。整段 4.0s，低頻轟隆持續滾動。<br>v15：#32、#39 兩條再調（羅哥反饋）。<br>　· #32 <b>Clutch Hitter</b>：重拳仍「不夠炸」，直接<b>換成炮彈</b>——炮口發射脆響（thunder crack）→ 彈道破空（swoosh）→ 落地巨型爆炸轟響（reverberating slam 35.7% 超低頻 + sledgehammer ≤120Hz 低頻 + 爆裂瞬態），比拳頭更炸、更猛。2.1s。<br>　· #39 <b>Titan Crusher</b>：地震轟隆仍「不夠」，直接<b>換成坦克</b>——柴油引擎轟鳴由遠及近（machine rumble 低通 + 1.0s 漸強逼近），兩發坦克炮巨響（reverberating slam + sledgehammer + 爆裂瞬態）+ 長球場混響尾。整段 3.8s。<br>　· <b>WANG 不被蓋音</b>：兩條聲效各加 0.40s 前導靜音，讓聲效在「William Wang」名字結束後才起音（實測坦克內容 5.98s 起、名字 5.66s 結束，留 0.32s 乾淨空氣）。人聲本身鎖定不能重錄（ElevenLabs 免費額度 0，2026-12-10 才重置）；若想讓 WANG 更突出，可把人聲時段的 BGM 壓得更低，需羅哥點頭才動。<br>聲效起音在名字最後一個字之後。<b>本次僅 #32、#39 兩條改動；#3、#9 與之前相同，其餘 8 條球員音頻、30s 換場與全部人聲播報一個字節未動。</b><br>v16：僅 #32、#39 兩條再改（羅哥反饋）。<br>　· #32 <b>Clutch Hitter</b>：從 v15 的「炮彈」換成<b>防空警報（AIR RAID SIREN）</b>——真實防空警報（spaceship_alarm.ogg：質心 2900→10000Hz 上下襬動約 48 次的嗚嗚警笛）經 to_stereo(1.1) 加寬為真立體聲，疊一層 machine_rumble 低通低頻「逼近壓迫」床 + 短球場混響尾。1.6s；警笛擺動清晰、警報窗左右聲道相關 −0.71（極寬），咬在名字尾（5.85s）不蓋 WANG。<br>　· #39 <b>Titan Crusher</b>：從 v15 的「坦克」換成<b>戰機低空掠過（JET FLYBY）</b>——重型引擎持續轟鳴（machine_rumble 低通雙頻段做引擎床），由左飛到右的聲像掃掠（swoosh 破空 + wind 高速氣流 + 高頻 Doppler 滑頻）模擬戰機從頭頂掠過，疊寬立體聲 + 長球場混響尾（rt60 2.0）。4.8s；引擎最響點 5.95s 才起，名字 4.46s 已結束，絕不蓋 WANG；整體 corrLR 0.22（寬立體聲）。<br>　· 順帶修正 build_v3 的聲效定位：舊邏輯 `min(soff, fade_start - fxe)` 會把過長的聲效硬壓到名字之前（對更長的語音會蓋住名字）；新邏輯讓長聲效自然落在名字尾後、作為收尾並延長音軌，短聲效（如 #32 1.6s）輸出完全不變。#39 實際語音較短（名字 4.46s 結束），本就未觸發延長，但邏輯已一併加固。</div>
-  <div class="note">v18：#32 從防空警報換成<b>甲子園球場號角長鳴</b>——真實警報錄音（spaceship_alarm.ogg）低通 + 包絡平滑化為穩定莊嚴號角長鳴，疊 machine_rumble 帶通低音主體 + 超低頻壓迫床 + 長球場混響（rt60 1.8），2.8s。#39 戰機掠過<b>加強轟隆</b>——引擎低頻佔比大幅提升（≤200Hz 70.7%→85.2%、≤80Hz 37.7%→46.3%），加一層 35Hz 超低頻壓力層、引擎增益 0.85→1.15，聲像仍由左飛到右。兩條皆不蓋 WANG、不削波。</div>
-<div class="note">v19：#39 從戰機掠過換成<b>戰鼓重擊 + 轟隆隆碾壓</b>——羅哥要軍鼓、戰鼓、轟隆隆。用真實戰爭鼓錄音（mk_2784 Drums of war，和 #3 同源的戰爭鼓節奏）作戰鼓主體，疊 machine_rumble + distant_thunder 持續低頻轟隆床（Titan Crusher 的碾壓壓迫感），重擊處再疊 reverberating_slam 低頻轟響，長球場混響尾（rt60 2.0）。≤200Hz 低頻佔比 96.5%、≤80Hz 42.6%，轟隆隆極突出；聲效最響點 7.45s 遠在名字（4.46s）之後，絕不蓋 WANG；峰值 0.970 不削波。#32 甲子園號角不變。</div>
-<div class="note">v20：#3 從戰爭鼓換成<b>THUNDERSTRUCK 雷劈炸裂 + 滾雷轟鳴</b>——羅哥要 Thunderstruck 風格。用真實雷聲錄音：thunder_crack.ogg 近雷炸裂（開頭 0.2s 即 87% 能量、0.4s 炸裂峰值）作雷劈主體，疊 rolling_thunder 滾雷（≤200Hz 86% 極低頻壓迫）+ machine_rumble 雷暴前低氣壓床，寬立體聲 + 長球場混響（rt60 2.0）。雷劈起始區峰值 0.572 炸裂有力；純聲效 ≤200Hz 57.2%、≤80Hz 20.5%；聲效 5.75s 起、名字 5.73s 結束（咬尾 0.02s），最響點 6.75s 遠在名字後，絕不蓋 WANG；峰值 0.972 不削波。#32 甲子園號角、#39 戰鼓轟隆不變。</div>
-<div class="note">v21：#3 從 THUNDERSTRUCK 雷暴換成<b>O FORTUNA 命運強奏 + 沉重銅管低音</b>——羅哥要 O Fortuna（卡爾·奧爾夫《布蘭詩歌》開篇）風格。用真實錄音：reverberating_slam.ogg 低頻轟響作開頭「命運強奏」爆發（素材 peak@0.04s，開頭即炸，即 O FORTUNA 的 ff 強奏一擊），疊 mk_2780（原 #3 素材，≤80Hz 高達 72% 的極重低頻）作「沉重命運/銅管低音」連續鋪底主體——無密集鼓點，天然與 #39 戰爭鼓（mk_2784，密點、≤80Hz 僅 4%）拉開聽感；長球場混響（rt60 2.2）放大莊嚴大教堂空間。純聲效 ≤80Hz 72.6%、立體聲 corrLR 0.382（極寬，銅管鋪開感，比 #39 的 0.540 更寬）；聲效 5.65s 起、名字 5.73s 結束（lead 0.10s 留空氣，爆發咬尾不蓋），最響點 7.00s 遠在名字後，絕不蓋 WANG；峰值 0.970 不削波。#32 甲子園號角、#39 戰鼓轟隆不變。</div>
-<div class="note">v22：#3 從 O FORTUNA 命運強奏換成<b>機關槍掃射 · MACHINE-GUN STRAFE</b>——羅哥要機關槍掃射。素材庫無真實機槍（Mixkit 免費檔的機槍都跳 Envato 付費），但 laser_gun.ogg 是一段真實錄製的連發武器（63+ 射擊峰、間隔 ~21ms ≈ 46Hz 連射）。取每段射擊的「起音爆裂」重排成更清晰均勻的槍點（~14Hz 一發聲、每聲獨立爆裂），左右聲像由左掃到右再掃回（strafe 掃射），下墊真實 machine_rumble 槍身震動（≤120Hz）+ 長球場混響（rt60 2.0）。純聲效 ≤200Hz 僅 11.6%、≤80Hz 3.4%（高頻連發，與 #39 戰鼓的低頻碾壓聽感徹底拉開）；聲效 5.65s 起、最響點 6.85s 遠在名字（5.73s）之後，絕不蓋 WANG；峰值 0.973 不削波。#32 甲子園號角、#39 戰鼓轟隆不變。</div>
-<div class="note">v23（聲效固定版）：兩件事。① #3 從「機關槍掃射（laser_gun 連發錄音）」改成<b>真實槍響掃射 · REAL GUNSHOT STRAFE</b>——羅哥不要激光／科幻味，要更真槍的爆裂聲。移除 laser_gun.ogg，改用真實硬物高速撞擊錄音 metal_bat_hits_baseball.ogg 作每聲槍點的高頻脆裂（中高頻 2–8k 50%、低頻 4.5%、衰減快），疊 reverberating_slam.ogg 低頻段作真實槍口爆風轟底，每聲 ~80ms 獨立瞬態、~14Hz 連發、L→R→L 掃射聲像，machine_rumble 槍身震動床 + 長球場混響（rt60 2.0）。純聲效 ≤200Hz 11.3%、≤80Hz 3.3%、立體聲 corrLR 0.560；聲效 5.65s 起、名字 5.73s 結束，最響點 6.75s 遠在名字後，絕不蓋 WANG；峰值 0.980 不削波。與 #39 戰鼓（低頻密點碾壓）聽感徹底拉開。② 新增<b>00 · 終結者 CLOSER</b>：從 #100 完整音樂精準截取 00:31–00:44 薩克斯風樂段（13.000s），置於換場音樂卡之下、編號 00，輸入 00 即可播放。#32 甲子園號角、#39 戰鼓轟隆、其餘 11 條聲效與全部人聲播報<b>全部固定、位元組未動</b>。</div>
-<div class="note">v24（00 CLOSER 樂句完整版）：羅哥反饋 00 音樂「有點不完整，前後再測試下」。實測完整音樂節拍 <b>0.824s（72.8 BPM）</b>、光譜通量強起音落在 <b>27.89 / 34.51 / 41.13</b>（間隔 6.62s = 8 拍 = 一個完整樂句），30.58 為最強起音（flux 0.94，薩克斯旋律進入）。原 31.00–44.00 是<b>樂句中間切入 + 又在下一句中間切斷</b>，且首尾都是滿音量硬切（31.0s 採樣 0.0902、44.0s 0.1091，非過零），聽感「突然開始、突然斷掉」。共實測三個候選：A 27.89–41.13（13.24s／2 樂句）、B 27.89–47.75（19.86s／3 樂句含鋪墊）、C 30.58–47.45（16.87s／從旋律起音到樂句收尾）。<b>採用 C</b>：完整涵蓋原本指定的 00:31–00:44，前後各補、樂句完整，加 0.03s 淡入 + 1.0s 餘弦淡出；首尾 10ms RMS 由 0.125/0.133 降為 <b>0.015/0.000</b>，峰值 0.841 不削波。<code>make_closer.py</code> 已參數化（A/B 參數寫在註解可一键切換）。12 條球員聲效與全部人聲播報<b>仍固定、位元組未動</b>；僅 00 音訊與頁面、<code>?v=24</code> 快取擊穿更新。</div>
-<div class="note">v24 手機／藍牙增強（音訊檔<b>位元組完全未動</b>）：上線 GitHub Pages 供手機連藍牙音箱播放。新增 <b>MediaSession</b>（藍牙音箱／車機／鎖屏顯示球員名與曲名，並支援硬體播放／暫停／上一首／下一首按鍵切歌）、<b>Screen Wake Lock</b>（播放時盡量保持螢幕常亮、回到前景自動重新索取，避免球場上鎖屏斷播）、iOS <code>playsinline</code> 內聯播放、手機藍牙操作提示條，並把 00 卡片殘留的舊時間標註修正為 00:30.6–00:47.5 · 17s。12 條球員聲效、00 CLOSER、換場與完整音樂全部沿用 C 版定稿，未重新編碼。</div>
-</details>
+  <details class="setup">
+    <summary>手機 / 藍牙設定</summary>
+    <div>先連藍牙音箱 → 音量調到最大 → 點卡片播放。播放時螢幕常亮：<span class="aw" id="awakeState">待播放</span>。iPhone 請把「自動鎖定」設為永不。藍牙音箱按鍵可暫停／切歌。</div>
+  </details>
 
-  <footer>共 12 名球員 + 換場音樂 + 00 終結者 CLOSER + 完整音樂 · v24 00 CLOSER 樂句完整版 / 3 真實槍響 / 32 甲子園號角 / 39 戰鼓轟隆 · 2026-11-11</footer>
+  <footer>點擊卡片播放 · 停止鍵結束 · v25 極簡版</footer>
 
   <audio id="audio" preload="auto" playsinline webkit-playsinline x-webkit-airplay="allow"></audio>
 
@@ -166,11 +118,9 @@ const players = {
   39:{name:"William Wang",  nick:"Titan Crusher",     file:"LIONS_BLACK_39_William_Wang.mp3"},
   100:{name:"完整音樂",       nick:"FULL STADIUM ANTHEM", file:"LIONS_BLACK_100_FULL_MUSIC.mp3"}
 };
-const transition = {name:"換場音樂", nick:"Transition · 30s", file:"LIONS_BLACK_TRANSITION_30s.mp3"};
-const closer = {name:"終結者 CLOSER", nick:"SAX · 00:30.6–00:47.5 · 17s", file:"LIONS_BLACK_00_CLOSER.mp3"};
+const transition = {name:"換場音樂", nick:"30s · Transition", file:"LIONS_BLACK_TRANSITION_30s.mp3"};
+const closer = {name:"終結者 CLOSER", nick:"薩克斯風 · 17s", file:"LIONS_BLACK_00_CLOSER.mp3"};
 
-// Carry the page's sharecode into every audio request so playback works even
-// when the browser blocks cookies (Safari ITP / private mode / embedded view).
 const SHARE = new URLSearchParams(location.search).get('sharecode');
 const audio = document.getElementById('audio');
 const nowBox = document.getElementById('now');
@@ -178,7 +128,6 @@ const nowNum = document.getElementById('nowNum');
 const nowName = document.getElementById('nowName');
 const nowNick = document.getElementById('nowNick');
 const nowTag = document.getElementById('nowTag');
-const numInput = document.getElementById('num');
 let activeCard = null;
 
 function resolve(num){
@@ -196,15 +145,10 @@ function clearActive(){
 
 function play(num){
   const item = resolve(num);
-  if(!item){
-    flash("找不到該號碼的球員");
-    return;
-  }
+  if(!item){ flash("無法播放"); return; }
   audio.pause();
-  // v17: add #100 full stadium anthem (BGM) + rename brand to LIONS BLACK
-  audio.src = item.file + '?v=24' + (SHARE ? '&sharecode=' + encodeURIComponent(SHARE) : '');
+  audio.src = item.file + '?v=25' + (SHARE ? '&sharecode=' + encodeURIComponent(SHARE) : '');
   currentNum = num; setMedia(item); keepAwake(true);
-  // reset UI
   clearActive();
   const card = document.querySelector('.card[data-num="'+item.number+'"]');
   if(card){ card.classList.add('active'); activeCard = card; }
@@ -214,11 +158,7 @@ function play(num){
   nowNum.textContent = (item.number===0) ? "0" : (item.number==="00") ? "00" : ("#"+item.number);
   nowName.textContent = item.name;
   nowNick.textContent = item.nick;
-
-  audio.play().then(()=>{}).catch(e=>{
-    // autoplay may be blocked; retry on user gesture is fine since this is a click/enter
-    flash("點一下頁面再試（瀏覽器限制自動播放）");
-  });
+  audio.play().catch(()=>{ flash("點一下頁面再試（瀏覽器限制自動播放）"); });
 }
 
 function stop(){
@@ -229,50 +169,45 @@ function stop(){
   nowBox.classList.remove('playing');
   nowTag.textContent = "待命";
   nowNum.textContent = "—";
-  nowName.textContent = "已停止";
+  nowName.textContent = "點擊卡片播放";
   nowNick.textContent = "";
   clearActive();
 }
 
 let flashTimer=null;
 function flash(msg){
-  const old = nowName.textContent;
   nowName.textContent = msg;
   clearTimeout(flashTimer);
-  flashTimer = setTimeout(()=>{ if(nowBox.classList.contains('idle')) nowName.textContent="輸入號碼開始"; }, 1800);
+  flashTimer = setTimeout(()=>{ if(nowBox.classList.contains('idle')) nowName.textContent="點擊卡片播放"; }, 1800);
 }
 
-// build grid
+// 12 張球員卡
 const grid = document.getElementById('grid');
-const SPECIAL = new Set([0,100]);  // 0=換場音樂, 100=完整音樂；00 CLOSER 為獨立 special 卡
-// 普通球員卡（按號碼升序）
+const SPECIAL = new Set([0,100]);
 Object.keys(players).map(Number).filter(n=>!SPECIAL.has(n)).sort((a,b)=>a-b).forEach(n=>{
   const p = players[n];
   const c = document.createElement('div');
   c.className='card'; c.dataset.num=n;
   c.innerHTML = '<div class="cnum">'+n+'</div><div class="cnm">'+p.name+'</div><div class="cnk">'+p.nick+'</div>';
-  c.addEventListener('click', ()=>{ numInput.value=n; play(n); });
+  c.addEventListener('click', ()=>play(n));
   grid.appendChild(c);
 });
-// 特殊卡：0 換場音樂 + 100 完整音樂
+
+// 三段音樂：換場 / 終結者 CLOSER / 完整音樂
 const specials = [
-  {n:0,    cnum:"0 · 換場音樂",        cnm:"30 秒高潮 · Transition"},
-  {n:"00", cnum:"00 · 終結者 CLOSER", cnm:"SAX · 00:30.6–00:47.5 · 17s"},
+  {n:0,    cnum:"0 · 換場音樂",        cnm:"30s · Transition"},
+  {n:"00", cnum:"00 · 終結者 CLOSER", cnm:"薩克斯風 · 17s"},
   {n:100,  cnum:"100 · 完整音樂",     cnm:"FULL STADIUM ANTHEM · 2:56"}
 ];
 specials.forEach(s=>{
   const c = document.createElement('div');
   c.className='tcard card'; c.dataset.num=s.n;
   c.innerHTML = '<div class="cnum">'+s.cnum+'</div><div class="cnm">'+s.cnm+'</div>';
-  c.addEventListener('click', ()=>{ numInput.value=s.n; play(s.n); });
+  c.addEventListener('click', ()=>play(s.n));
   grid.appendChild(c);
 });
 
-// input handlers
-document.getElementById('goBtn').addEventListener('click', ()=>play(numInput.value));
 document.getElementById('stopBtn').addEventListener('click', stop);
-numInput.addEventListener('keydown', e=>{ if(e.key==='Enter') play(numInput.value); });
-numInput.focus();
 audio.addEventListener('ended', ()=>{
   keepAwake(false);
   if('mediaSession' in navigator) navigator.mediaSession.playbackState='none';
@@ -280,7 +215,7 @@ audio.addEventListener('ended', ()=>{
   nowTag.textContent="播完"; nowName.textContent=nowName.textContent+" · 完成";
 });
 
-/* ===== v24 手機 / 藍牙音箱播放增強（音訊檔完全未改） ===== */
+/* ===== 手機 / 藍牙音箱播放（音訊檔完全未改） ===== */
 let currentNum = null, wakeLock = null;
 const awakeEl = document.getElementById('awakeState');
 const ORDER = [0,"00"].concat(
@@ -290,7 +225,7 @@ const ORDER = [0,"00"].concat(
 function setAwakeHint(ok){
   if(!awakeEl) return;
   awakeEl.textContent = ok ? '已啟用'
-    : ('wakeLock' in navigator ? '未啟用' : '此瀏覽器不支援，請手動關閉自動鎖定');
+    : ('wakeLock' in navigator ? '未啟用' : '不支援，請手動關閉自動鎖定');
   awakeEl.style.color = ok ? '#7ee787' : 'var(--gold)';
 }
 
@@ -314,9 +249,7 @@ function playNext(dir){
   if(currentNum===null) return;
   let i = ORDER.findIndex(n => String(n)===String(currentNum));
   if(i<0) i=0;
-  const next = ORDER[(i+dir+ORDER.length)%ORDER.length];
-  numInput.value = next;
-  play(next);
+  play(ORDER[(i+dir+ORDER.length)%ORDER.length]);
 }
 
 function setMedia(item){
@@ -328,7 +261,7 @@ function setMedia(item){
     navigator.mediaSession.metadata = new MediaMetadata({
       title: item.name,
       artist: 'LIONS BLACK · '+tag,
-      album: '出場音樂播放器 · '+(item.nick||'')
+      album: '出場音樂 · '+(item.nick||'')
     });
     navigator.mediaSession.playbackState = 'playing';
     const A = {
@@ -342,7 +275,6 @@ function setMedia(item){
   }catch(e){}
 }
 
-// 從背景回到前景時重新索取 Wake Lock（瀏覽器會在頁面隱藏時自動釋放）
 document.addEventListener('visibilitychange', ()=>{
   if(document.visibilityState==='visible' && !audio.paused) keepAwake(true);
 });
